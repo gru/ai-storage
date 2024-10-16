@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\AI.Storage.Http.Contracts\AI.Storage.Http.Contracts.csproj" />
+        <ProjectReference Include="..\AI.Storage.Entities\AI.Storage.Entities.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" />
+        <PackageReference Include="AWSSDK.S3" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="AI.Storage.Host" />
+        <InternalsVisibleTo Include="AI.Storage.Tests" />
+    </ItemGroup>
+</Project>

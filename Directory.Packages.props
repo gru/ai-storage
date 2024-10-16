@@ -1,0 +1,50 @@
+<Project>
+<ItemGroup>
+    <!-- Microsoft packages -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.FeatureManagement.AspNetCore" Version="3.0.0" />
+
+    <!-- Npgsql -->
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+
+    <!-- Serilog packages -->
+    <PackageVersion Include="Serilog" Version="3.1.1" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="8.0.0" />
+    <PackageVersion Include="Serilog.Settings.Configuration" Version="8.0.0" />
+
+    <!-- Swashbuckle -->
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+
+    <!-- API Versioning -->
+    <PackageVersion Include="Asp.Versioning.Mvc" Version="8.0.0" />
+    <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
+
+    <!-- Testing packages -->
+    <PackageVersion Include="xunit" Version="2.4.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="NSubstitute" Version="5.1.0" />
+    <PackageVersion Include="FluentValidation" Version="11.8.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    
+    <!-- FluentValidation packages -->
+    <PackageVersion Include="FluentValidation" Version="11.8.1" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1" />
+    
+    <!-- Other packages -->
+    <PackageVersion Include="RestEase" Version="1.6.4" />
+    <PackageVersion Include="Ben.Demystifier" Version="0.4.1" />
+    
+</ItemGroup>
+</Project>

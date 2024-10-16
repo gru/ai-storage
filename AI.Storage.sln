@@ -1,0 +1,64 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Storage", "Src\AI.Storage\AI.Storage.csproj", "{B345E7AE-58D3-4AA8-95B7-1B0AE9CB52E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Storage.Entities", "Src\AI.Storage.Entities\AI.Storage.Entities.csproj", "{9B8ACE82-868A-46BA-BF77-167624CEC483}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Storage.Host", "Src\AI.Storage.Host\AI.Storage.Host.csproj", "{BE54F6AC-89C9-4911-8A79-7896ABC746FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Storage.Http.Contracts", "Src\AI.Storage.Http.Contracts\AI.Storage.Http.Contracts.csproj", "{D07574DE-FF42-460C-9E57-AE14EEC9CBB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Storage.Migrations", "Src\AI.Storage.Migrations\AI.Storage.Migrations.csproj", "{4D579E26-502A-48C7-AA25-5F9870333334}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Tests", ".Tests", "{40ADDB54-35F5-4F25-A12D-D0749FD3B163}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Project.Tests", "Tests\AI.Storage.Tests\AI.Storage.Tests.csproj", "{4D129D0F-4DBB-46E2-B813-77660AD7721A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".SolutionItems", ".SolutionItems", "{4136FF93-995C-47FA-BD1C-62BDC7DBAF13}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Packages.props = Directory.Packages.props
+		Directory.Build.props = Directory.Build.props
+		.aidigestignore = .aidigestignore
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		CHANGELOG.md = CHANGELOG.md
+		README.md = README.md
+		UpdateCodebase.cmd = UpdateCodebase.cmd
+		UpdateCodebase.ps1 = UpdateCodebase.ps1
+		update-codebase.sh = update-codebase.sh
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B345E7AE-58D3-4AA8-95B7-1B0AE9CB52E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B345E7AE-58D3-4AA8-95B7-1B0AE9CB52E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B345E7AE-58D3-4AA8-95B7-1B0AE9CB52E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B345E7AE-58D3-4AA8-95B7-1B0AE9CB52E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B8ACE82-868A-46BA-BF77-167624CEC483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B8ACE82-868A-46BA-BF77-167624CEC483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B8ACE82-868A-46BA-BF77-167624CEC483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B8ACE82-868A-46BA-BF77-167624CEC483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE54F6AC-89C9-4911-8A79-7896ABC746FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE54F6AC-89C9-4911-8A79-7896ABC746FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE54F6AC-89C9-4911-8A79-7896ABC746FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE54F6AC-89C9-4911-8A79-7896ABC746FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D07574DE-FF42-460C-9E57-AE14EEC9CBB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D07574DE-FF42-460C-9E57-AE14EEC9CBB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D07574DE-FF42-460C-9E57-AE14EEC9CBB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D07574DE-FF42-460C-9E57-AE14EEC9CBB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D579E26-502A-48C7-AA25-5F9870333334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D579E26-502A-48C7-AA25-5F9870333334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D579E26-502A-48C7-AA25-5F9870333334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D579E26-502A-48C7-AA25-5F9870333334}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D129D0F-4DBB-46E2-B813-77660AD7721A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D129D0F-4DBB-46E2-B813-77660AD7721A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D129D0F-4DBB-46E2-B813-77660AD7721A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D129D0F-4DBB-46E2-B813-77660AD7721A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4D129D0F-4DBB-46E2-B813-77660AD7721A} = {40ADDB54-35F5-4F25-A12D-D0749FD3B163}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,8 @@
+﻿**/.gitkeep
+**/.gitignore
+.aidigestignore
+**/.idea/
+**/.dockerignore
+update-codebase.sh
+UpdateCodebase.cmd
+UpdateCodebase.ps1
