@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AI.Storage.Entities;
 
 /// <summary>
-/// Represents an Content entity in the database.
-/// This class defines the structure and properties of the Content table.
+/// Represents a Content entity in the database.
+/// This class defines the structure and properties of the Content table,
+/// representing a file stored in S3 storage.
 /// </summary>
-[Table("aggregates")]
+[Table("contents")]
 public class ContentEntity
 {
     /// <summary>
@@ -20,10 +21,18 @@ public class ContentEntity
     public long Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the name of the Content.
-    /// This field is required and stored as text in the database.
+    /// Gets or sets the file name of the Content.
+    /// This field is required and stored as varchar(150) in the database.
     /// </summary>
     [Required]
-    [Column("name", TypeName = "text")]
-    public string Name { get; set; } = string.Empty;
+    [Column("file_name", TypeName = "varchar(150)")]
+    public string FileName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the content type of the file.
+    /// This field is required and stored as varchar(50) in the database.
+    /// </summary>
+    [Required]
+    [Column("content_type", TypeName = "varchar(50)")]
+    public string ContentType { get; set; } = string.Empty;
 }

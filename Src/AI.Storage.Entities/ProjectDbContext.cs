@@ -21,7 +21,7 @@ public class ProjectDbContext : DbContext
     /// Gets or sets the DbSet for Content entities.
     /// This property provides access to query and save instances of ContentEntity.
     /// </summary>
-    public DbSet<ContentEntity> Contents { get; set; }
+    public DbSet<ContentEntity> Contents { get; set; } = null!;
 
     /// <summary>
     /// Configures the model that was discovered by convention from the entity types
@@ -34,10 +34,29 @@ public class ProjectDbContext : DbContext
 
         modelBuilder.Entity<ContentEntity>(entity =>
         {
-            entity.ToTable("aggregates");
+            // Configure the table name
+            entity.ToTable("contents");
+            
+            // Configure the primary key
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id).HasColumnName("id").HasColumnType("bigint").UseIdentityAlwaysColumn();
-            entity.Property(e => e.Name).HasColumnName("name").HasColumnType("text").IsRequired();
+            
+            // Configure the Id property
+            entity.Property(e => e.Id)
+                .HasColumnName("id")
+                .HasColumnType("bigint")
+                .UseIdentityAlwaysColumn();
+            
+            // Configure the FileName property
+            entity.Property(e => e.FileName)
+                .HasColumnName("file_name")
+                .HasColumnType("varchar(150)")
+                .IsRequired();
+            
+            // Configure the ContentType property
+            entity.Property(e => e.ContentType)
+                .HasColumnName("content_type")
+                .HasColumnType("varchar(50)")
+                .IsRequired();
         });
     }
 }
