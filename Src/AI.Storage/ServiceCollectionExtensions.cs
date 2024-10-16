@@ -27,7 +27,8 @@ namespace AI.Storage
                     configuration["AWS:SecretKey"]);
                 var config = new AmazonS3Config
                 {
-                    ServiceURL = configuration["AWS:ServiceURL"]
+                    ServiceURL = configuration["AWS:ServiceURL"],
+                    ForcePathStyle = true
                 };
                 return new AmazonS3Client(credentials, config);
             });

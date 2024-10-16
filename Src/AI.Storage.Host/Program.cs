@@ -3,6 +3,8 @@ using System.Reflection;
 using AI.Storage;
 using AI.Storage.Entities;
 using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon.S3.Util;
 using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -104,6 +106,29 @@ foreach (var description in versionProvider.ApiVersionDescriptions)
 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 app.Services.GetRequiredService<IOptions<SwaggerGenOptions>>().Value.IncludeXmlComments(xmlPath);
+
+var s3Client = app.Services.GetRequiredService<IAmazonS3>();
+var configuration = app.Services.GetRequiredService<IConfiguration>();
+var bucketName = configuration["AWS:BucketName"];
+
+try
+{
+    var bucketExists = AmazonS3Util.DoesS3BucketExist(s3Client, bucketName);
+    if (!bucketExists)
+    {
+        var putBucketRequest = new PutBucketRequest
+        {
+            BucketName = bucketName,
+            UseClientRegion = true
+        };
+
+        await s3Client.PutBucketAsync(putBucketRequest);
+    }
+}
+catch (Exception exception)
+{
+  Log.Error(exception, "Error occured while trying to create bucket");
+}
 
 if (app.Environment.IsDevelopment())
 {
