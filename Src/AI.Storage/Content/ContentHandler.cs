@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IO;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AI.Storage.Content;
 
@@ -66,7 +67,7 @@ public class ContentHandler
                 var fileName = contentDisposition.FileName;
                 var contentType = section.ContentType;
 
-                var blobKey = $"{Guid.NewGuid()}/{fileName}";
+                var blobKey = $"{Guid.NewGuid()}";
                 using (var memoryStream = _streamManager.GetStream("S3UploadBuffer"))
                 {
                     await section.Body.CopyToAsync(memoryStream, cancellationToken);
@@ -108,13 +109,13 @@ public class ContentHandler
     }
 
     /// <summary>
-    /// Retrieves a Content entity by its ID.
+    /// Retrieves and downloads a Content entity by its ID.
     /// </summary>
     /// <param name="id">The unique identifier of the Content to retrieve.</param>
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
-    /// <returns>The retrieved ContentEntity.</returns>
+    /// <returns>A FileStreamResult containing the downloaded content.</returns>
     /// <exception cref="InvalidOperationException">Thrown when a Content with the specified ID is not found.</exception>
-    public async Task<ContentEntity> GetContent(long id, CancellationToken cancellationToken)
+    public async Task<FileStreamResult> GetContent(long id, CancellationToken cancellationToken)
     {
         var content = await _dbContext.Contents.FindAsync([id], cancellationToken);
             
@@ -123,7 +124,18 @@ public class ContentHandler
             throw new InvalidOperationException($"Content with id {id} not found");
         }
 
-        return content;
+        var getObjectRequest = new GetObjectRequest
+        {
+            BucketName = _bucketName,
+            Key = content.BlobKey
+        };
+
+        var response = await _s3Client.GetObjectAsync(getObjectRequest, cancellationToken);
+
+        return new FileStreamResult(response.ResponseStream, content.ContentType)
+        {
+            FileDownloadName = content.FileName
+        };
     }
     
     private static bool IsMultipartContentType(string? contentType)

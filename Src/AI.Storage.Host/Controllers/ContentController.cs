@@ -41,15 +41,15 @@ public class ContentController : ControllerBase
     }
 
     /// <summary>
-    /// Retrieves a Content entity by its ID.
+    /// Retrieves and downloads a Content entity by its ID.
     /// </summary>
     /// <param name="id">The unique identifier of the Content to retrieve.</param>
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
-    /// <returns>An ActionResult containing the ContentDto of the requested Content.</returns>
+    /// <returns>A FileStreamResult containing the downloaded content.</returns>
     [HttpGet("{id:long}")]
-    public async Task<ActionResult<ContentEntity>> GetContent(long id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetContent(long id, CancellationToken cancellationToken)
     {
-        var content = await _contentHandler.GetContent(id, cancellationToken);
-        return Ok(content);
+        var fileStreamResult = await _contentHandler.GetContent(id, cancellationToken);
+        return fileStreamResult;
     }
 }
