@@ -35,4 +35,13 @@ public class ContentEntity
     [Required]
     [Column("content_type", TypeName = "varchar(50)")]
     public string ContentType { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the blob key of the file in S3 storage.
+    /// This field is required and stored as varchar(100) in the database.
+    /// The format is "{BucketName}/{FileName}".
+    /// </summary>
+    [Required]
+    [Column("blob_key", TypeName = "varchar(100)")]
+    public string BlobKey { get; set; } = string.Empty;
 }

@@ -1,6 +1,14 @@
-﻿using AI.Storage.Entities;
+﻿using System.Net.Http.Headers;
+using System.Net.Mime;
+using AI.Storage.Entities;
 using AI.Storage.Http.Contracts;
-using FluentValidation;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IO;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace AI.Storage.Content;
 
@@ -10,59 +18,116 @@ namespace AI.Storage.Content;
 /// </summary>
 public class ContentHandler
 {
-    private readonly ProjectDbContext _dbContext;
-    private readonly IValidator<CreateContentCommand> _validator;
+   private readonly ProjectDbContext _dbContext;
+    private readonly IAmazonS3 _s3Client;
+    private readonly string _bucketName;
+    
+    private static readonly RecyclableMemoryStreamManager _streamManager = new(
+        blockSize: 1024 * 16,
+        largeBufferMultiple: 1024 * 1024,
+        maximumBufferSize: 1024 * 1024 * 16,
+        useExponentialLargeBuffer: true,
+        maximumSmallPoolFreeBytes: 1024 * 1024 * 64,
+        maximumLargePoolFreeBytes: 1024 * 1024 * 128);
 
     /// <summary>
     /// Initializes a new instance of the ContentHandler class.
     /// </summary>
     /// <param name="dbContext">The database context for accessing Content entities.</param>
-    /// <param name="validator">The validator for CreateContentCommand.</param>
-    public ContentHandler(ProjectDbContext dbContext, IValidator<CreateContentCommand> validator)
+    /// <param name="s3Client">The Amazon S3 client for interacting with S3 storage.</param>
+    /// <param name="configuration">The configuration to access app settings.</param>
+    public ContentHandler(ProjectDbContext dbContext, IAmazonS3 s3Client, IConfiguration configuration)
     {
         _dbContext = dbContext;
-        _validator = validator;
+        _s3Client = s3Client;
+        _bucketName = configuration["AWS:BucketName"] ?? throw new InvalidOperationException("S3 bucket name is not configured.");
     }
 
     /// <summary>
-    /// Creates a new Content entity based on the provided command.
+    /// Creates new Content entities based on the files uploaded in the HTTP request.
     /// </summary>
-    /// <param name="command">The command containing details for creating the Content.</param>
+    /// <param name="httpContext">The HttpContext containing the multipart request.</param>
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
-    /// <returns>The ID of the newly created Content.</returns>
-    /// <exception cref="ValidationException">Thrown when the command fails validation.</exception>
-    public async Task<long> CreateContent(CreateContentCommand command, CancellationToken cancellationToken)
+    /// <returns>A CreateContentResponse containing the IDs of the newly created Content entities.</returns>
+    public async Task<CreateContentResponse> CreateContent(HttpContext httpContext, CancellationToken cancellationToken)
     {
-        await _validator.ValidateAndThrowAsync(command, cancellationToken);
+        if (IsMultipartContentType(httpContext.Request.ContentType))
+            throw new InvalidOperationException("Not a multipart request.");
 
-        var aggregate = new ContentEntity
-        {
-            Name = command.Name
-        };
-
-        _dbContext.Contents.Add(aggregate);
+        var ids = new List<long>();
+        var reader = new MultipartReader(httpContext.Request.GetMultipartBoundary(), httpContext.Request.Body);
+        var section = await reader.ReadNextSectionAsync(cancellationToken);
         
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        while (section != null)
+        {
+            var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
+            if (hasContentDispositionHeader && contentDisposition!.DispositionType.Equals("form-data") && !string.IsNullOrEmpty(contentDisposition.FileName))
+            {
+                var fileName = contentDisposition.FileName;
+                var contentType = section.ContentType;
 
-        return aggregate.Id;
+                var blobKey = $"{Guid.NewGuid()}/{fileName}";
+                using (var memoryStream = _streamManager.GetStream("S3UploadBuffer"))
+                {
+                    await section.Body.CopyToAsync(memoryStream, cancellationToken);
+                    
+                    memoryStream.Position = 0;
+
+                    var putObjectRequest = new PutObjectRequest
+                    {
+                        BucketName = _bucketName,
+                        Key = blobKey,
+                        InputStream = memoryStream,
+                        ContentType = contentType
+                    };
+
+                    await _s3Client.PutObjectAsync(putObjectRequest, cancellationToken);
+                }
+
+                var contentEntity = new ContentEntity
+                {
+                    FileName = fileName,
+                    ContentType = contentType ?? MediaTypeNames.Application.Octet,
+                    BlobKey = blobKey
+                };
+
+                _dbContext.Contents.Add(contentEntity);
+                
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                ids.Add(contentEntity.Id);
+            }
+
+            section = await reader.ReadNextSectionAsync(cancellationToken);
+        }
+
+        return new CreateContentResponse
+        {
+            ContentIds = ids
+        };
     }
 
     /// <summary>
-    /// Retrieves an Content entity by its ID.
+    /// Retrieves a Content entity by its ID.
     /// </summary>
     /// <param name="id">The unique identifier of the Content to retrieve.</param>
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
     /// <returns>The retrieved ContentEntity.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when an Content with the specified ID is not found.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when a Content with the specified ID is not found.</exception>
     public async Task<ContentEntity> GetContent(long id, CancellationToken cancellationToken)
     {
-        var aggregate = await _dbContext.Contents.FindAsync([id], cancellationToken);
+        var content = await _dbContext.Contents.FindAsync([id], cancellationToken);
             
-        if (aggregate == null)
+        if (content == null)
         {
             throw new InvalidOperationException($"Content with id {id} not found");
         }
 
-        return aggregate;
+        return content;
+    }
+    
+    private static bool IsMultipartContentType(string? contentType)
+    {
+        return !string.IsNullOrEmpty(contentType) && contentType.Contains("multipart/", StringComparison.OrdinalIgnoreCase);
     }
 }

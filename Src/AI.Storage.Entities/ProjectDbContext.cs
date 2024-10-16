@@ -57,6 +57,12 @@ public class ProjectDbContext : DbContext
                 .HasColumnName("content_type")
                 .HasColumnType("varchar(50)")
                 .IsRequired();
+            
+            // Configure the BlobKey property
+            entity.Property(e => e.BlobKey)
+                .HasColumnName("blob_key")
+                .HasColumnType("varchar(100)")
+                .IsRequired();
         });
     }
 }

@@ -12,6 +12,10 @@
     <ItemGroup>
         <PackageReference Include="FluentValidation" />
         <PackageReference Include="AWSSDK.S3" />
+        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" />
     </ItemGroup>
     <ItemGroup>
         <InternalsVisibleTo Include="AI.Storage.Host" />

@@ -9,7 +9,10 @@
     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageVersion Include="Microsoft.FeatureManagement.AspNetCore" Version="3.0.0" />
-
+    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+    
     <!-- Npgsql -->
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
 
@@ -45,6 +48,7 @@
     <!-- Other packages -->
     <PackageVersion Include="RestEase" Version="1.6.4" />
     <PackageVersion Include="Ben.Demystifier" Version="0.4.1" />
+    <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.2" />
     
 </ItemGroup>
 </Project>
