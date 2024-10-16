@@ -11,20 +11,20 @@ namespace AI.Storage.Http.Contracts;
 public interface IContentV1Controller
 {
     /// <summary>
-    /// Creates a new Content.
+    /// Creates new Content entities based on the files uploaded in the HTTP request.
     /// </summary>
-    /// <param name="command">The command containing the details for creating the Content.</param>
+    /// <param name="content">The HttpContent containing the files to be uploaded. This should typically be a MultipartFormDataContent.</param>
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
-    /// <returns>The ID of the newly created Content.</returns>
+    /// <returns>A CreateContentResponse containing the IDs of the newly created Content entities.</returns>
     [Post("api/v1/Content")]
-    Task<long> CreateContent([Body] CreateContentCommand command, CancellationToken cancellationToken = default);
+    Task<CreateContentResponse> CreateContent([Body] HttpContent content, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Retrieves an Content by its ID.
+    /// Retrieves and downloads a Content entity by its ID.
     /// </summary>
     /// <param name="id">The unique identifier of the Content to retrieve.</param>
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
-    /// <returns>The Content DTO containing the details of the requested Content.</returns>
+    /// <returns>An HttpResponseMessage containing the file content and metadata.</returns>
     [Get("api/v1/Content/{id}")]
-    Task<ContentDto> GetContent([Path] long id, CancellationToken cancellationToken = default);
+    Task<HttpResponseMessage> GetContent([Path] long id, CancellationToken cancellationToken = default);
 }

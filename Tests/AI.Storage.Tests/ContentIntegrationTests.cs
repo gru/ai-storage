@@ -1,4 +1,5 @@
-﻿using AI.Storage.Entities;
+﻿using System.Net.Http.Headers;
+using AI.Storage.Entities;
 using AI.Storage.Http.Contracts;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -38,18 +39,48 @@ public class ContentIntegrationTests : IClassFixture<WebApplicationFactory<Progr
     }
 
     [Fact]
-    public async Task CreateAndGetContent_ShouldSucceed()
+    public async Task CreateContent_ShouldUploadFileSuccessfully()
     {
-        var command = new CreateContentCommand
-        {
-            Name = "Test Content"
-        };
+        // Arrange
+        var fileName = "test.txt";
+        var content = "This is a test file content";
+        var multipartContent = new MultipartFormDataContent();
+        var fileContent = new ByteArrayContent(System.Text.Encoding.UTF8.GetBytes(content));
+        fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+        multipartContent.Add(fileContent, "file", fileName);
 
-        var id = await _client.CreateContent(command);
-        var aggregate = await _client.GetContent(id);
+        // Act
+        var response = await _client.CreateContent(multipartContent, CancellationToken.None);
 
-        Assert.NotEqual(0, id);
-        Assert.Equal(id, aggregate.Id);
-        Assert.Equal(command.Name, aggregate.Name);
+        // Assert
+        Assert.NotNull(response);
+        Assert.NotEmpty(response.ContentIds);
+    }
+
+    [Fact]
+    public async Task GetContent_ShouldDownloadFileSuccessfully()
+    {
+        // Arrange
+        var fileName = "test.txt";
+        var content = "This is a test file content";
+        var multipartContent = new MultipartFormDataContent();
+        var fileContent = new ByteArrayContent(System.Text.Encoding.UTF8.GetBytes(content));
+        fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+        multipartContent.Add(fileContent, "file", fileName);
+
+        var createResponse = await _client.CreateContent(multipartContent, CancellationToken.None);
+        var contentId = createResponse.ContentIds.First();
+
+        // Act
+        var response = await _client.GetContent(contentId, CancellationToken.None);
+
+        // Assert
+        Assert.NotNull(response);
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal("text/plain", response.Content.Headers.ContentType?.ToString());
+        Assert.Equal(fileName, response.Content.Headers.ContentDisposition?.FileName);
+
+        var downloadedContent = await response.Content.ReadAsStringAsync();
+        Assert.Equal(content, downloadedContent);
     }
 }
