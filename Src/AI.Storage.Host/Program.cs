@@ -2,6 +2,7 @@
 using System.Reflection;
 using AI.Storage;
 using AI.Storage.Entities;
+using AI.Storage.Host.Internal;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Util;
@@ -84,7 +85,10 @@ var aiProjectAssembly = Assembly.Load("AI.Storage");
 builder.Services.AddValidatorsFromAssembly(aiProjectAssembly);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.OperationFilter<SwaggerFileUploadFilter>();
+});
 builder.Services.AddStorageServices();
 
 var app = builder.Build();

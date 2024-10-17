@@ -5,6 +5,7 @@ using AI.Storage.Http.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http.Extensions;
+using Swashbuckle.AspNetCore.Annotations;
 
 
 namespace AI.Storage.Host.Controllers;
@@ -36,6 +37,7 @@ public class ContentController : ControllerBase
     /// <returns>An ActionResult containing the CreateContentResponse with IDs of the newly created Content entities.</returns>
     [HttpPost]
     [DisableFormValueModelBinding]
+    [SwaggerOperation(OperationId = "CreateContent")]
     public async Task<ActionResult<CreateContentResponse>> CreateContent(CancellationToken cancellationToken)
     {
         var response = await _contentHandler.CreateContent(HttpContext, cancellationToken);
