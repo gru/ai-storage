@@ -1,5 +1,6 @@
 ﻿using AI.Storage.Content;
 using AI.Storage.Entities;
+using AI.Storage.Host.Internal;
 using AI.Storage.Http.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
@@ -34,6 +35,7 @@ public class ContentController : ControllerBase
     /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
     /// <returns>An ActionResult containing the CreateContentResponse with IDs of the newly created Content entities.</returns>
     [HttpPost]
+    [DisableFormValueModelBinding]
     public async Task<ActionResult<CreateContentResponse>> CreateContent(CancellationToken cancellationToken)
     {
         var response = await _contentHandler.CreateContent(HttpContext, cancellationToken);

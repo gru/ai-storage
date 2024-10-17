@@ -52,7 +52,7 @@ public class ContentHandler
     /// <returns>A CreateContentResponse containing the IDs of the newly created Content entities.</returns>
     public async Task<CreateContentResponse> CreateContent(HttpContext httpContext, CancellationToken cancellationToken)
     {
-        if (IsMultipartContentType(httpContext.Request.ContentType))
+        if (!IsMultipartContentType(httpContext.Request.ContentType))
             throw new InvalidOperationException("Not a multipart request.");
 
         var ids = new List<long>();

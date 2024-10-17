@@ -29,21 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\..\.dockerignore">
-          <Link>.dockerignore</Link>
-        </Content>
-        <Content Include="appsettings.Staging.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="appsettings.Production.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="appsettings.dev.json">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <InternalsVisibleTo Include="AI.Storage.Tests" />
     </ItemGroup>
     

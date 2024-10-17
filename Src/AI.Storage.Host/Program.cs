@@ -113,7 +113,7 @@ var bucketName = configuration["AWS:BucketName"];
 
 try
 {
-    var bucketExists = AmazonS3Util.DoesS3BucketExist(s3Client, bucketName);
+    var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(s3Client, bucketName);
     if (!bucketExists)
     {
         var putBucketRequest = new PutBucketRequest
