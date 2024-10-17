@@ -19,7 +19,7 @@ namespace AI.Storage.Content;
 /// </summary>
 public class ContentHandler
 {
-   private readonly ProjectDbContext _dbContext;
+   private readonly StorageDbContext _dbContext;
     private readonly IAmazonS3 _s3Client;
     private readonly string _bucketName;
     
@@ -37,7 +37,7 @@ public class ContentHandler
     /// <param name="dbContext">The database context for accessing Content entities.</param>
     /// <param name="s3Client">The Amazon S3 client for interacting with S3 storage.</param>
     /// <param name="configuration">The configuration to access app settings.</param>
-    public ContentHandler(ProjectDbContext dbContext, IAmazonS3 s3Client, IConfiguration configuration)
+    public ContentHandler(StorageDbContext dbContext, IAmazonS3 s3Client, IConfiguration configuration)
     {
         _dbContext = dbContext;
         _s3Client = s3Client;

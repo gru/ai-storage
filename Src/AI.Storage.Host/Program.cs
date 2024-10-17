@@ -77,7 +77,7 @@ builder.Services.AddProblemDetails(options =>
     };
 });
 
-builder.Services.AddDbContextPool<ProjectDbContext>(options =>
+builder.Services.AddDbContextPool<StorageDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), 
         npgsqlOptions => npgsqlOptions.EnableRetryOnFailure()));
 

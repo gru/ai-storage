@@ -7,6 +7,7 @@ using Serilog;
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Development.json", optional: true)
     .AddEnvironmentVariables()
     .Build();
 
@@ -22,7 +23,7 @@ try
     services.AddLogging(loggingBuilder =>
         loggingBuilder.AddSerilog(dispose: true));
 
-    services.AddDbContext<ProjectDbContext>(options =>
+    services.AddDbContext<StorageDbContext>(options =>
         options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
     var serviceProvider = services.BuildServiceProvider();
@@ -31,7 +32,7 @@ try
     using (var scope = serviceProvider.CreateScope())
     {
         var dbContext = scope.ServiceProvider
-            .GetRequiredService<ProjectDbContext>();
+            .GetRequiredService<StorageDbContext>();
         
         await dbContext.Database.MigrateAsync();
     }

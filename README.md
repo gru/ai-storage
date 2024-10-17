@@ -37,7 +37,7 @@ AI Storage is a microservice designed to handle file storage operations using Am
 ### Installation
 1. Clone the repository:
    ```
-   git clone [your-repository-url]
+   git clone git@github.com:gru/ai-storage.git
    ```
 2. Navigate to the project directory:
    ```
@@ -68,7 +68,7 @@ AI Storage is a microservice designed to handle file storage operations using Am
 To run the microservice:
 
 ```
-dotnet run --project Src/AI.Storage.Host/AI.Storage.Host.csproj
+dotnet run --project AI.Storage.Host.csproj
 ```
 
 ## API Documentation
@@ -85,7 +85,7 @@ This microservice uses Entity Framework Core with PostgreSQL. To set up the data
 2. Update the connection string in `appsettings.json`.
 3. Run migrations:
    ```
-   dotnet run --project Src/AI.Storage.Migrations/AI.Storage.Migrations.csproj
+   dotnet run --project AI.Storage.Migrations.csproj
    ```
 
 ## Testing
