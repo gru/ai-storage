@@ -32,10 +32,10 @@
         <Content Include="..\..\.dockerignore">
           <Link>.dockerignore</Link>
         </Content>
-        <Content Include="appsettings.staging.json">
+        <Content Include="appsettings.Staging.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="appsettings.production.json">
+        <Content Include="appsettings.Production.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Update="appsettings.dev.json">
