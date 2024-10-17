@@ -14,7 +14,7 @@ services:
     command: server --console-address ":9001" /data
 
   postgres:
-    image: postgres:14
+    image: postgres:16
     environment:
       POSTGRES_DB: storage-db
       POSTGRES_USER: postgres
