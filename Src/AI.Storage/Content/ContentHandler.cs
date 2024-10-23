@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IO;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using Serilog;
 
 namespace AI.Storage.Content;
 
@@ -30,6 +32,21 @@ public class ContentHandler
         useExponentialLargeBuffer: true,
         maximumSmallPoolFreeBytes: 1024 * 1024 * 64,
         maximumLargePoolFreeBytes: 1024 * 1024 * 128);
+
+    static ContentHandler()
+    {
+        _streamManager.StreamDoubleDisposed += (sender, args) =>
+        {
+            Log.Warning("Предупреждение: Произошло двойное освобождение потока: {Tag}", args.Tag);
+            Debug.Fail($"Обнаружено двойное освобождение потока: {args.Tag}. Это может указывать на проблему в управлении ресурсами.");
+        };
+
+        _streamManager.StreamFinalized += (sender, args) =>
+        {
+            Log.Warning("Предупреждение: Поток финализирован без явного освобождения: {Tag}", args.Tag);
+            Debug.Fail($"Поток финализирован без явного освобождения: {args.Tag}. Это может привести к утечке ресурсов.");
+        };
+    }
 
     /// <summary>
     /// Initializes a new instance of the ContentHandler class.

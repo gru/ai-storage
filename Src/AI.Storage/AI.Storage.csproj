@@ -17,6 +17,7 @@
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" />
+        <PackageReference Include="Serilog" />
     </ItemGroup>
     <ItemGroup>
         <InternalsVisibleTo Include="AI.Storage.Host" />
