@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".SolutionItems", ".Solution
 		AddMigration.ps1 = AddMigration.ps1
 		AddMigration.cmd = AddMigration.cmd
 		add-migration.sh = add-migration.sh
+		.github\workflows\ci.yml = .github\workflows\ci.yml
 	EndProjectSection
 EndProject
 Global
