@@ -24,7 +24,7 @@ public class ContentHandler
     private readonly string _bucketName;
     
     private static readonly RecyclableMemoryStreamManager _streamManager = new(
-        blockSize: 1024 * 16,
+        blockSize: 1024 * 64,
         largeBufferMultiple: 1024 * 1024,
         maximumBufferSize: 1024 * 1024 * 16,
         useExponentialLargeBuffer: true,
@@ -72,14 +72,15 @@ public class ContentHandler
                 {
                     await section.Body.CopyToAsync(memoryStream, cancellationToken);
                     
-                    memoryStream.Position = 0;
-
                     var putObjectRequest = new PutObjectRequest
                     {
                         BucketName = _bucketName,
                         Key = blobKey,
                         InputStream = memoryStream,
-                        ContentType = contentType
+                        ContentType = contentType,
+                        AutoCloseStream = false,
+                        DisablePayloadSigning = true,
+                        AutoResetStreamPosition = true
                     };
 
                     await _s3Client.PutObjectAsync(putObjectRequest, cancellationToken);
